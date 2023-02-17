@@ -4,6 +4,7 @@ import Loading from './Loading'
 import PropTypes from 'prop-types'
 import InfiniteScroll from "react-infinite-scroll-component";
 
+
 export class News extends Component {
     static defaultProps = {
         country: 'in',
@@ -29,15 +30,20 @@ export class News extends Component {
     }
 
     async updateNews() {
+        this.props.setProgress(10);
         this.setState({ loading: true });
         const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=f4bd810b72624b0cb0a5e0a42fdc8dad&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+        this.props.setProgress(20);
         let data = await fetch(url);
+        this.props.setProgress(30);
         let parsedData = await data.json();
+        this.props.setProgress(70);
         this.setState({
             articles: parsedData.articles,
             loading: false,
             totalResults: parsedData.totalResults
         })
+        this.props.setProgress(100);
 
     }
 
